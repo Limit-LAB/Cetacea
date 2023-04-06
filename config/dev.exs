@@ -59,6 +59,21 @@ config :cetacea, CetaceaWeb.Endpoint,
       ~r"lib/cetacea_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ]
+  # reloadable_compilers: [:gettext, :elixir],
+  # reloadable_apps: [:ui, :backend]
+
+
+# config :phoenix_live_reload,
+  # dirs: [
+    # "priv/static",
+    # "priv/gettext",
+    # "lib/cetacea_web",
+    # "lib/cetacea_web/controllers",
+  # ],
+  # backend: :fs_poll,
+  # backend_opts: [
+    # interval: 500
+  # ]
 
 # Enable dev routes for dashboard and mailbox
 config :cetacea, dev_routes: true

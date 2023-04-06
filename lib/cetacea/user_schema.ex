@@ -1,7 +1,7 @@
 defmodule Cetacea.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Cetacea.User
+  # alias Cetacea.User
 
   schema "users" do
     field :pubkey, :string
