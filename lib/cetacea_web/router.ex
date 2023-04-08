@@ -24,6 +24,7 @@ defmodule CetaceaWeb.Router do
   scope "/api", CetaceaWeb do
     pipe_through :api
 
+    post "/auth/pubkey_login_v1", PubkeyLoginV1, :create
     post "/auth/jwt_login_v1", JwtLoginV1, :create
   end
 
