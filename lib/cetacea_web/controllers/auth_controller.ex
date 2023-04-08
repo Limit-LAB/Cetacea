@@ -5,7 +5,7 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
   use CetaceaWeb, :controller
 
   def create(conn, params) do
-    pubkey = params[:pubkey]
+    pubkey = params["pubkey"]
     secret_key_base = Application.get_env(:cetacea, CetaceaWeb.Endpoint)[:secret_key_base]
     nt = if params["sign_jwt_duration"] == nil do
       24 * 60 * 60 * 1000
@@ -29,7 +29,7 @@ defmodule CetaceaWeb.JwtLoginV1 do
   use CetaceaWeb, :controller
 
   def create(conn, params) do
-    token = params[:jwt_token]
+    token = params["jwt_token"]
     IO.puts(token)
     # header = params["header"]
     if token == nil do

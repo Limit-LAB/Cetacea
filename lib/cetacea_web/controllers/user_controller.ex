@@ -5,8 +5,8 @@ defmodule CetaceaWeb.GetSelfUserRecordV1 do
   use CetaceaWeb, :controller
 
   def create(conn, _params) do
-    user = conn[:user]
+    user = conn.assigns[:user]
     IO.puts("user:")
-    IO.puts(user)
+    json(conn, %{user: user})
   end
 end
