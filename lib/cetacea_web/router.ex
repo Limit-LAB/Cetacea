@@ -14,11 +14,9 @@ defmodule CetaceaWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", CetaceaWeb do
-    pipe_through :browser
-
-    # get "/", PageController, :home
-    # get "/hello", HelloController, :index
+  pipeline :loginedapi do
+    plug :accepts, ["json"]
+    plug :logined
   end
 
   scope "/api", CetaceaWeb do
@@ -26,6 +24,31 @@ defmodule CetaceaWeb.Router do
 
     post "/auth/pubkey_login_v1", PubkeyLoginV1, :create
     post "/auth/jwt_login_v1", JwtLoginV1, :create
+  end
+
+  scope "/api", CetaceaWeb do
+    pipe_through :loginedapi
+
+    post "/user/get_self_user_record_v1", GetSelfUserRecordV1, :create
+  end
+
+  def logined(conn, _opts) do
+    import Plug.Conn
+    token = conn.params["jwt_token"]
+    if token == nil do
+      json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token js not exist"})
+    end
+    secret_key_base = Application.get_env(:cetacea, CetaceaWeb.Endpoint)[:secret_key_base]
+    signer = Joken.Signer.create("HS256", secret_key_base)
+    {state, claims} = Cetacea.Token.verify_and_validate(token, signer)
+    if state == :error do
+      json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is invalid"})
+    else
+      # assign(conn, :user, claims)
+      Map.put(conn, :user, claims)
+      # put_in(conn, [:user], claims)
+    end
+    conn
   end
 
   # Other scopes may use custom stacks.
