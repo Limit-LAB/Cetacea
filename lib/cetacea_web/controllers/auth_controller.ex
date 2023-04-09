@@ -5,6 +5,7 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
   use CetaceaWeb, :controller
 
   @max_expire 24 * 60 * 60 * 1000
+  @min_expire 1 * 60 * 60 * 1000
 
   def create(conn, %{"pubkey" => pubkey} = params) do
     secret_key_base = Application.get_env(:cetacea, CetaceaWeb.Endpoint)[:secret_key_base]
@@ -12,6 +13,7 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
     expire =
       Map.get(params, "sign_jwt_duration", @max_expire)
       |> min(@max_expire)
+      |> max(@min_expire)
 
     claims = %{"pubkey" => pubkey, "sign_jwt_duration" => expire}
 

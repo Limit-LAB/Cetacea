@@ -12,7 +12,7 @@ defmodule CetaceaWeb.ErrorHTMLTest do
 
     body =
       build_conn()
-      |> post(~p"/api/auth/pubkey_login_v1", %{pubkey: "fuck lemonhx"})
+      |> post(~p"/api/auth/pubkey_login_v1", %{pubkey: "fuck lemonhx", sign_jwt_duration: -1})
       |> json_response(200)
 
     assert body["jwt_token"]
