@@ -6,8 +6,7 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
 
   @max_expire 24 * 60 * 60 * 1000
 
-  def create(conn, params) do
-    pubkey = params["pubkey"]
+  def create(conn, %{"pubkey" => pubkey} = params) do
     secret_key_base = Application.get_env(:cetacea, CetaceaWeb.Endpoint)[:secret_key_base]
 
     expire =
@@ -23,6 +22,10 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
       {:ok, jwt, _} -> json(conn, %{jwt_token: jwt})
       {:error, msg} -> json(conn, %{error_code: "InvalidPubkey", error_message: msg})
     end
+  end
+
+  def create(conn, _params) do
+    json(conn, %{error_code: "InvalidPubkey", error_message: "pubkey is not exist"})
   end
 end
 
@@ -44,6 +47,6 @@ defmodule CetaceaWeb.JwtLoginV1 do
   end
 
   def create(conn, _params) do
-    json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token js not exist"})
+    json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
   end
 end
