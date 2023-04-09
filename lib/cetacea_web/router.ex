@@ -38,9 +38,11 @@ defmodule CetaceaWeb.Router do
     if token == nil do
       json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token js not exist"})
     end
+
     secret_key_base = Application.get_env(:cetacea, CetaceaWeb.Endpoint)[:secret_key_base]
     signer = Joken.Signer.create("HS256", secret_key_base)
     {state, claims} = Cetacea.Token.verify_and_validate(token, signer)
+
     if state == :ok do
       assign(conn, :user, claims)
     else

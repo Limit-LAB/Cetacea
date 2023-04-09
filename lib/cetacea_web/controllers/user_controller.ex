@@ -1,6 +1,5 @@
 import Plug.Conn
 
-
 defmodule CetaceaWeb.GetSelfUserRecordV1 do
   use CetaceaWeb, :controller
 
