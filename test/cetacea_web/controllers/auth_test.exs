@@ -35,4 +35,18 @@ defmodule CetaceaWeb.ErrorHTMLTest do
     assert body["error_code"] == "InvalidJWTToken"
     assert body["error_message"] == "jwt token is invalid: signature_error"
   end
+
+  test "Login" do
+    jwt_token_body =
+      build_conn()
+      |> post(~p"/api/auth/pubkey_login_v1", %{pubkey: "fuck lemonhx", sign_jwt_duration: -1})
+      |> json_response(200)
+
+    body =
+      build_conn()
+      |> post(~p"/api/auth/jwt_login_v1", jwt_token_body)
+      |> json_response(200)
+
+    assert Enum.empty?(body)
+  end
 end
