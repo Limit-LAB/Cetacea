@@ -22,6 +22,8 @@ defmodule CetaceaWeb.Router do
   scope "/api", CetaceaWeb do
     pipe_through :api
 
+    post "/client_check_v1", ClientCheckServerRequestV1, :create
+
     post "/auth/pubkey_login_v1", PubkeyLoginV1, :create
     post "/auth/jwt_login_v1", JwtLoginV1, :create
   end
@@ -29,7 +31,10 @@ defmodule CetaceaWeb.Router do
   scope "/api", CetaceaWeb do
     pipe_through :loginedapi
 
-    post "/user/get_self_user_record_v1", GetSelfUserRecordV1, :create
+    post "/user/user_info_v1/get", GetUserInfoV1, :create
+    post "/user/user_record_v1/get", GetSelfUserRecordV1, :create
+    post "/user/user_record_v1/set", SetSelfUserRecordV1, :create
+
   end
 
   def logined(%Plug.Conn{params: %{"jwt_token" => token}} = conn, _opts) do
@@ -48,6 +53,10 @@ defmodule CetaceaWeb.Router do
     else
       json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is invalid"})
     end
+  end
+
+  def logined(%Plug.Conn{params: _params} = conn, _opts) do
+    json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
   end
 
   # Other scopes may use custom stacks.
