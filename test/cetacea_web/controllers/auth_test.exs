@@ -17,8 +17,12 @@ defmodule CetaceaWeb.ErrorHTMLTest do
       :crypto.strong_rand_bytes(if len == 255, do: len + 1, else: len)
     end
 
-    for a <- Enum.shuffle([nil, gen_invalid_pubkey.(), :rand.uniform() * 10000]) do
-      for b <- Enum.shuffle([nil, gen_invalid_pubkey.(), trunc(:rand.uniform() * 10000)]) do
+    gen_random_list = fn ->
+      Enum.shuffle([nil, gen_invalid_pubkey.(), :rand.uniform() * 10000, [:fuck, :lemonhx]])
+    end
+
+    for a <- gen_random_list.() do
+      for b <- gen_random_list.() do
         body = api_auth(~p"/api/auth/pubkey_login_v1", %{pubkey: a, sign_jwt_duration: b})
         assert body["error_code"] == "InvalidPubkey", "expect error occurred"
       end
@@ -34,7 +38,8 @@ defmodule CetaceaWeb.ErrorHTMLTest do
           Enum.shuffle([
             nil,
             :crypto.strong_rand_bytes(:rand.uniform(1000)),
-            :rand.uniform() * 10000
+            :rand.uniform() * 10000,
+            [:fuck, :lemonhx]
           ]) do
       body = api_auth(~p"/api/auth/jwt_login_v1", %{jwt_token: a})
       assert body["error_code"] == "InvalidJWTToken"
