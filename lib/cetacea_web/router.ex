@@ -35,6 +35,8 @@ defmodule CetaceaWeb.Router do
     post "/user/user_record_v1/get", GetSelfUserRecordV1, :create
     post "/user/user_record_v1/set", SetSelfUserRecordV1, :create
 
+    post "/client/room_v1/<roomid>/sync", SyncRoomV1, :create
+    post "/client/room_v1/<roomid>/send_messages", SendMessagesV1, :create
   end
 
   def logined(%Plug.Conn{params: %{"jwt_token" => token}} = conn, _opts) do
