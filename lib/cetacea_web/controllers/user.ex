@@ -3,7 +3,7 @@ import Plug.Conn
 defmodule CetaceaWeb.GetUserInfoV1 do
   use CetaceaWeb, :controller
 
-  def create(conn, %{"user_id" => user_id, "user_server" => user_server} = params) do
+  def create(conn, %{"user_id" => user_id, "user_server" => user_server}) do
     # user = conn.assigns[:user]
     json(conn, %{user_id: user_id})
   end

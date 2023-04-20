@@ -38,7 +38,7 @@ defmodule UserRecordV1 do
     field :last_login_ts, :utc_datetime
     field :pinged_rooms, {:array, :string}
     embeds_many :last_reads, LastReadV1
-    has_one :user_info, UserInfoV1
+    has_one :user_info, UserInfoV1, foreign_key: :user_id
     embeds_many :blocked_users, UserHeaderV1
     embeds_many :friends, FriendV1
   end
@@ -58,7 +58,7 @@ defmodule FriendV1 do
 
   embedded_schema  do
     field :alias, :string
-    has_one :user, UserInfoV1
+    has_one :user, UserInfoV1, foreign_key: :user_id
     # field :last_login_ts, :utc_datetime
     field :friend_since, :utc_datetime
     field :tags, {:array, :string}
