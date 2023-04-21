@@ -6,8 +6,8 @@ defmodule CetaceaWeb.ClientCheckServerRequestV1 do
       server_version: "1",
       server_name: "demo",
       server_description: "demo server",
-      supported_extensions: [],
-      })
+      supported_extensions: []
+    })
   end
 
   def create(conn, _params) do
