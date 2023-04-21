@@ -50,12 +50,14 @@ defmodule CetaceaWeb.Router do
     signer = Joken.Signer.create("HS256", secret_key_base)
     {state, claims} = Cetacea.Token.verify_and_validate(token, signer)
 
+    # TODO: check Map.get(claims, "sign_jwt_duration")
+
     if state == :ok do
-      assign(conn, :user, claims)
-    # else
+      assign(conn, :user, claims["payload"])
+    else
       # json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is invalid"})
+      conn
     end
-    conn
   end
 
   def logined(%Plug.Conn{params: _params} = conn, _opts) do
