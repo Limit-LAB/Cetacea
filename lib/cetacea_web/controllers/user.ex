@@ -13,7 +13,6 @@ defmodule CetaceaWeb.GetUserInfoV1 do
   end
 end
 
-
 defmodule CetaceaWeb.GetSelfUserRecordV1 do
   use CetaceaWeb, :controller
 
@@ -23,7 +22,6 @@ defmodule CetaceaWeb.GetSelfUserRecordV1 do
     json(conn, %{user: user})
   end
 end
-
 
 defmodule CetaceaWeb.SetSelfUserRecordV1 do
   use CetaceaWeb, :controller
