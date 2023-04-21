@@ -1,5 +1,6 @@
 # import Plug.Conn
 # import Joken.Signer
+import Ecto.Query, only: [from: 2]
 
 defmodule CetaceaWeb.PubkeyLoginV1 do
   use CetaceaWeb, :controller
@@ -8,6 +9,23 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
   @min_expire 1 * 60 * 60 * 1000
 
   def create(conn, %{"pubkey" => pubkey} = params) do
+
+    user = Cetacea.Repo.one(from u in UserInfoV1, where: u.pubkey == ^pubkey)
+
+    if user != nil do
+      make_packet(conn, params, UserInfoV1.encode(user))
+    else
+      json(conn, %{error_code: "InvalidPubkey", error_message: "user not found"})
+    end
+
+    # claims = %{body | "sign_jwt_duration" => expire} %{
+      # "pubkey" => pubkey,
+      # "sign_jwt_duration" => expire
+    # }
+
+  end
+
+  def make_packet(conn, params, payload) do
     secret_key_base = Application.get_env(:cetacea, CetaceaWeb.Endpoint)[:secret_key_base]
 
     expire =
@@ -15,7 +33,10 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
       |> min(@max_expire)
       |> max(@min_expire)
 
-    claims = %{"pubkey" => pubkey, "sign_jwt_duration" => expire}
+    claims = %{
+      payload: payload,
+      sign_jwt_duration: expire
+    }
 
     signer = Joken.Signer.create("HS256", secret_key_base)
 
