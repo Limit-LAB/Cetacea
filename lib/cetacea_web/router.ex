@@ -52,13 +52,13 @@ defmodule CetaceaWeb.Router do
 
     if state == :ok do
       assign(conn, :user, claims)
-    else
-      json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is invalid"})
+    # else
+      # json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is invalid"})
     end
   end
 
   def logined(%Plug.Conn{params: _params} = conn, _opts) do
-    json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
+    # json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
   end
 
   # Other scopes may use custom stacks.
