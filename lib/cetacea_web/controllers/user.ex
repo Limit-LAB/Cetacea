@@ -51,14 +51,31 @@ defmodule CetaceaWeb.SetSelfUserRecordV1 do
 
   def create(%Plug.Conn{assigns: %{"user" => %{"user_id" => user_id} = user}} = conn,
     %{
+      # "user_id" => user_id,
       "pinged_rooms" => pinged_rooms,
-      "last_reads" => pinged_rooms,
-      "user_info" => user_info,
+      "last_reads" => last_reads,
       "blocked_users" => blocked_users,
       "friends" => friends
     }) do
-      # TODO
-      json(conn, %{user_id: user_id})
+      # Enum.each(list, fn(x) -> IO.puts(x) end)
+      Enum.each(last_reads, fn(x) -> Cetacea.Repo.insert(%LastReadV1{
+        user_id: user_id,
+        event_id: x.event_id,
+        room_id: x.room_id})
+      end)
+      Enum.each(friends, fn(x) ->
+        id = Cetacea.Repo.insert(%FriendV1{
+        user_id: user_id,
+        alias: x.alias,
+        friend_id: x.friend_id,
+        friend_since: x.friend_since}).id
+        Enum.each(x.tags, fn(tag) -> Cetacea.Repo.insert(%FriendTagV1{
+          user_id: user_id,
+          friend_id: id,
+          tag: tag})
+        end)
+      end)
+      json(conn, %{})
   end
 
   def create(conn, _params) do
