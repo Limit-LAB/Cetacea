@@ -20,8 +20,8 @@ end
 defmodule CetaceaWeb.GetSelfUserRecordV1 do
   use CetaceaWeb, :controller
 
-  def create(%Plug.Conn{assigns: %{"user" => user}}, _params) do
-    user_id = user["user_id"]
+  def create(%Plug.Conn{assigns: %{"user" => %{"user_id" => user_id}}} = conn, _params) do
+    # user_id = user["user_id"]
     user_info = Cetacea.Repo.one(from u in UserInfoV1)
     user_info = UserInfoV1.encode(user_info)
     last_reads = Cetacea.Repo.all(from u in LastReadV1, where: u.user_id == ^user_id)
@@ -49,7 +49,7 @@ defmodule CetaceaWeb.SetSelfUserRecordV1 do
   blocked_users: Vec<UserHeaderV1>,
   friends: Vec<Friend>,"
 
-  def create(%Plug.Conn{assigns: %{"user" => %UserInfoV1{"user_id" => user_id} = user}},
+  def create(%Plug.Conn{assigns: %{"user" => %{"user_id" => user_id} = user}} = conn,
     %{
       "pinged_rooms" => pinged_rooms,
       "last_reads" => pinged_rooms,
