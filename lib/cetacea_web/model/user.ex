@@ -1,8 +1,9 @@
 defmodule UserInfoV1 do
   use Ecto.Schema
 
+  # @primary_key {:user_id, :integer, autogenerate: true}
   schema "user" do
-    field :user_id, :id, primary_key: true
+    field :user_id, :string, primary_key: true
     field :user_server, :string
     field :user_name, :string
     field :pubkey, :string
@@ -24,6 +25,20 @@ defmodule UserInfoV1 do
     struct
     |> Map.from_struct()
     |> Map.delete(:__meta__)
+    |> Map.delete(:id)
+  end
+
+  def self_encode(struct) do
+    struct
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:id)
+    |> Map.delete(:user_name_visibility)
+    |> Map.delete(:avatar_visibility)
+    |> Map.delete(:bio_visibility)
+    |> Map.delete(:last_login_time_visibility)
+    |> Map.delete(:last_update_time_visibility)
+    |> Map.delete(:visibility)
   end
 end
 
@@ -37,31 +52,12 @@ end
 #     })
 # end
 
-
-defmodule UserHeaderV1 do
-  use Ecto.Schema
-
-  embedded_schema do
-    field :user_id, :id
-    field :user_server, :string
-  end
-end
-
-# defmodule UserInfoFieldV1 do
+# defmodule UserHeaderV1 do
 #   use Ecto.Schema
 
 #   embedded_schema do
-#     field :field, :string
-#     field :visibility, Ecto.Enum, values: [:Public, :OnlyToFriends, :NotAllow]
-#   end
-# end
-
-# defmodule UserDatetimeFieldV1 do
-#   use Ecto.Schema
-
-#   embedded_schema do
-#     field :field, :utc_datetime
-#     field :visibility, Ecto.Enum, values: [:Public, :OnlyToFriends, :NotAllow]
+#     field :user_id, :id
+#     field :user_server, :string
 #   end
 # end
 
@@ -81,20 +77,47 @@ defmodule LastReadV1 do
   use Ecto.Schema
 
   schema "user_last_read" do
-    field :user_id, :id
-    field :room_id, :id
-    field :event_id, :id
+    field :user_id, :string
+    field :room_id, :string
+    field :event_id, :string
+  end
+
+  def encode(struct) do
+    struct
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:user_id)
   end
 end
 
+defmodule UserInfoV1 do
+  use Ecto.Schema
+
+  # @primary_key {:user_id, :integer, autogenerate: true}
+  schema "block_list" do
+    field :user_id, :string
+    field :block_id, :string
+  end
+
+  def encode(struct) do
+    struct.block_id
+  end
+end
 defmodule FriendV1 do
   use Ecto.Schema
 
   schema "user_friend" do
-    field :user_id, :id
+    field :user_id, :string
     field :alias, :string
-    field :friend_id, :id
+    field :friend_id, :string
     field :friend_since, :utc_datetime
+  end
+
+  def encode(struct) do
+    struct
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:user_id)
   end
 end
 
@@ -102,9 +125,12 @@ defmodule FriendTagV1 do
   use Ecto.Schema
 
   schema "friend_tag" do
-    field :user_id, :id
-    field :friend_id, :id
-    field :friend_since, :utc_datetime
+    field :user_id, :string
+    field :friend_id, :string
     field :tag, :string
+  end
+
+  def encode(struct) do
+    struct.tag
   end
 end

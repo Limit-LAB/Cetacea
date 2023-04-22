@@ -3,7 +3,7 @@ defmodule Cetacea.Repo.Migrations.UserTable do
 
   def change do
     create table(:user) do
-      add :user_id, :id, primary_key: true
+      add :user_id, :string, primary_key: true, autoincrement: true
       add :user_server, :string
       add :pubkey, :string
       add :user_name, :string

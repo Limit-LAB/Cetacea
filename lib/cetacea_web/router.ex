@@ -26,15 +26,16 @@ defmodule CetaceaWeb.Router do
 
     post "/auth/pubkey_login_v1", PubkeyLoginV1, :create
     post "/auth/jwt_login_v1", JwtLoginV1, :create
+
+    post "/user/user_info_v1/get", GetUserInfoV1, :create
   end
 
   scope "/api", CetaceaWeb do
     pipe_through :loginedapi
-
-    post "/user/user_info_v1/get", GetUserInfoV1, :create
     post "/user/user_record_v1/get", GetSelfUserRecordV1, :create
     post "/user/user_record_v1/set", SetSelfUserRecordV1, :create
 
+    post "/client/room_v1/create", CreateRoomV1, :create
     post "/client/room_v1/<roomid>/sync", SyncRoomV1, :create
     post "/client/room_v1/<roomid>/send_messages", SendMessagesV1, :create
   end

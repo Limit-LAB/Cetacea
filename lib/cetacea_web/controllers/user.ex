@@ -20,30 +20,48 @@ end
 defmodule CetaceaWeb.GetSelfUserRecordV1 do
   use CetaceaWeb, :controller
 
+  def create(%Plug.Conn{assigns: %{"user" => user}}, _params) do
+    user_id = user["user_id"]
+    user_info = Cetacea.Repo.one(from u in UserInfoV1)
+    user_info = UserInfoV1.encode(user_info)
+    last_reads = Cetacea.Repo.all(from u in LastReadV1, where: u.user_id == ^user_id)
+    last_reads = Enum.map(last_reads, fn(last_read) -> LastReadV1.encode(last_read) end)
+    json(conn, %{
+      pinged_rooms: [],
+      last_reads: last_reads,
+      user_info: user_info,
+      blocked_users: [],
+      friends: [],
+    })
+  end
+
   def create(conn, _params) do
-    user = conn.assigns[:user]
-    if user != nil do
-      user_id = user["user_id"]
-      # Cetacea.Repo.one(from u in UserRecordV1)
-      json(conn, %{user_id: user_id})
-    else
-      json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
-    end
+    json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
   end
 end
 
 defmodule CetaceaWeb.SetSelfUserRecordV1 do
   use CetaceaWeb, :controller
 
-  def create(conn, _params) do
-    user = conn.assigns[:user]
-    if user != nil do
-      user_id = user.user_id
-      # Cetacea.Repo.one(from u in UserRecordV1)
+  "pinged_rooms: Vec<String>,
+  last_reads: Vec<LastReadV1>,
+  user_info: UserInfoV1,
+  blocked_users: Vec<UserHeaderV1>,
+  friends: Vec<Friend>,"
+
+  def create(%Plug.Conn{assigns: %{"user" => %UserInfoV1{"user_id" => user_id} = user}},
+    %{
+      "pinged_rooms" => pinged_rooms,
+      "last_reads" => pinged_rooms,
+      "user_info" => user_info,
+      "blocked_users" => blocked_users,
+      "friends" => friends
+    }) do
       # TODO
       json(conn, %{user_id: user_id})
-    else
-      json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
-    end
+  end
+
+  def create(conn, _params) do
+    json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
   end
 end
