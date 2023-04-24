@@ -23,10 +23,10 @@ defmodule MessageV1 do
   use Ecto.Schema
 
   schema "message" do
-    field :message_id, :id, primary_key: true
-    field :room_id, :id
-    field :reply_to, :id
-    # embeds_many :message_parts, MessagePartV1
+    field :message_id, :string#, primary_key: true
+    field :sender, :string
+    field :room_id, :string
+    field :reply_to, :string
   end
 end
 
@@ -34,7 +34,7 @@ defmodule MessagePartV1 do
   use Ecto.Schema
 
   schema "message_part" do
-    field :message_id, :id
+    field :message_id, :string
     field :type_, :string
     field :data, :string
   end

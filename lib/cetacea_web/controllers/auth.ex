@@ -9,7 +9,6 @@ defmodule CetaceaWeb.PubkeyLoginV1 do
   @min_expire 1 * 60 * 60 * 1000
 
   def create(conn, %{"pubkey" => pubkey} = params) do
-
     user = Cetacea.Repo.one(from u in UserInfoV1, where: u.pubkey == ^pubkey)
 
     if user != nil do

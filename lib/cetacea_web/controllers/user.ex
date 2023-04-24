@@ -49,12 +49,11 @@ defmodule CetaceaWeb.SetSelfUserRecordV1 do
   blocked_users: Vec<UserHeaderV1>,
   friends: Vec<Friend>,"
 
-  def create(%Plug.Conn{assigns: %{"user" => %{"user_id" => user_id} = user}} = conn,
+  def create(%Plug.Conn{assigns: %{"user" => %{"user_id" => user_id}}} = conn,
     %{
-      # "user_id" => user_id,
-      "pinged_rooms" => pinged_rooms,
+      # "pinged_rooms" => pinged_rooms,
       "last_reads" => last_reads,
-      "blocked_users" => blocked_users,
+      # "blocked_users" => blocked_users,
       "friends" => friends
     }) do
       # Enum.each(list, fn(x) -> IO.puts(x) end)
