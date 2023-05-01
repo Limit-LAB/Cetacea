@@ -16,7 +16,7 @@ defmodule CetaceaWeb.Router do
 
   pipeline :loginedapi do
     plug :accepts, ["json"]
-    plug :logined
+    plug CetaceaWeb.Plugs.Logined
   end
 
   scope "/api", CetaceaWeb do
@@ -38,32 +38,6 @@ defmodule CetaceaWeb.Router do
     post "/client/room_v1/create", CreateRoomV1, :create
     post "/client/room_v1/<roomid>/sync", SyncRoomV1, :create
     post "/client/room_v1/<roomid>/send_messages", SendMessagesV1, :create
-  end
-
-  def logined(%Plug.Conn{params: %{"jwt_token" => token}} = conn, _opts) do
-    import Plug.Conn
-    # token = conn.params["jwt_token"]
-    if token == nil do
-      json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token js not exist"})
-    end
-
-    secret_key_base = Application.get_env(:cetacea, CetaceaWeb.Endpoint)[:secret_key_base]
-    signer = Joken.Signer.create("HS256", secret_key_base)
-    {state, claims} = Cetacea.Token.verify_and_validate(token, signer)
-
-    # TODO: check Map.get(claims, "sign_jwt_duration")
-
-    if state == :ok do
-      assign(conn, :user, claims["payload"])
-    else
-      # json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is invalid"})
-      conn
-    end
-  end
-
-  def logined(%Plug.Conn{params: _params} = conn, _opts) do
-    # json(conn, %{error_code: "InvalidJWTToken", error_message: "jwt token is not exist"})
-    conn
   end
 
   # Other scopes may use custom stacks.
