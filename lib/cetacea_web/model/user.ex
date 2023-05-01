@@ -1,9 +1,9 @@
 defmodule UserInfoV1 do
   use Ecto.Schema
 
-  # @primary_key {:user_id, :integer, autogenerate: true}
+  @primary_key {:user_id, Ecto.UUID, autogenerate: {Uniq.UUID, :uuid7, []}}
   schema "user" do
-    field :user_id, :string, primary_key: true
+    # field :user_id, :string, primary_key: true
     field :user_server, :string
     field :user_name, :string
     field :pubkey, :string
@@ -77,9 +77,9 @@ defmodule LastReadV1 do
   use Ecto.Schema
 
   schema "user_last_read" do
-    field :user_id, :string
-    field :room_id, :string
-    field :event_id, :string
+    field :user_id, Ecto.UUID
+    field :room_id, Ecto.UUID
+    field :event_id, Ecto.UUID
   end
 
   def encode(struct) do
@@ -95,8 +95,8 @@ defmodule UserInfoV1 do
 
   # @primary_key {:user_id, :integer, autogenerate: true}
   schema "block_list" do
-    field :user_id, :string
-    field :block_id, :string
+    field :user_id, Ecto.UUID
+    field :block_id, Ecto.UUID
   end
 
   def encode(struct) do
@@ -107,9 +107,9 @@ defmodule FriendV1 do
   use Ecto.Schema
 
   schema "user_friend" do
-    field :user_id, :string
+    field :user_id, Ecto.UUID
     field :alias, :string
-    field :friend_id, :string
+    field :friend_id, Ecto.UUID
     field :friend_since, :utc_datetime
   end
 
@@ -125,8 +125,8 @@ defmodule FriendTagV1 do
   use Ecto.Schema
 
   schema "friend_tag" do
-    field :user_id, :string
-    field :friend_id, :string
+    field :user_id, Ecto.UUID
+    field :friend_id, Ecto.UUID
     field :tag, :string
   end
 

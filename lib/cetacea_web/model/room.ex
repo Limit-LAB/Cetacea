@@ -1,8 +1,9 @@
 defmodule TestRoom do
   use Ecto.Schema
 
+  @primary_key {:room_id, Ecto.UUID, autogenerate: {Uniq.UUID, :uuid7, []}}
   schema "test_room" do
-    field :room_id, :id, primary_key: true
+    # field :room_id, :id, primary_key: true
     # field :room_version, :string
     field :name, :string
     field :description, :string
@@ -22,8 +23,9 @@ end
 defmodule MessageV1 do
   use Ecto.Schema
 
+  @primary_key {:message_id, Ecto.UUID, autogenerate: {Uniq.UUID, :uuid7, []}}
   schema "message" do
-    field :message_id, :string#, primary_key: true
+    # field :message_id, :string#, primary_key: true
     field :sender, :string
     field :room_id, :string
     field :reply_to, :string
@@ -34,8 +36,8 @@ defmodule MessagePartV1 do
   use Ecto.Schema
 
   schema "message_part" do
-    field :message_id, :string
-    field :type_, :string
+    field :message_id, Ecto.UUID
+    field :type, :string
     field :data, :string
   end
 end

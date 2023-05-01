@@ -3,7 +3,7 @@ defmodule Cetacea.Repo.Migrations.UserTable do
 
   def change do
     create table(:user) do
-      add :user_id, :string, primary_key: true, autoincrement: true
+      add :user_id, Ecto.UUID, primary_key: true, autogenerate: {Uniq.UUID, :uuid7, []}
       add :user_server, :string
       add :pubkey, :string
       add :user_name, :string
@@ -20,19 +20,19 @@ defmodule Cetacea.Repo.Migrations.UserTable do
       add :visibility, :string
     end
     create table(:user_last_read) do
-      add :user_id, :id
-      add :room_id, :id
-      add :event_id, :id
+      add :user_id, Ecto.UUID
+      add :room_id, Ecto.UUID
+      add :event_id, Ecto.UUID
     end
     create table(:user_friend) do
-      add :user_id, :id
+      add :user_id, Ecto.UUID
       add :alias, :string
-      add :friend_id, :id
+      add :friend_id, Ecto.UUID
       add :friend_since, :utc_datetime
     end
     create table(:friend_tag) do
-      add :user_id, :id
-      add :friend_id, :id
+      add :user_id, Ecto.UUID
+      add :friend_id, Ecto.UUID
       add :friend_since, :utc_datetime
       add :tag, :string
     end

@@ -41,7 +41,7 @@ defmodule CetaceaWeb.SendMessagesV1 do
     "messages" => messages,
   }) do
     Enum.each(messages, fn(message) ->
-      message_id = UUID.uuid4()
+      message_id = Uniq.UUID.uuid7()
       Cetacea.Repo.insert(%MessageV1{
         message_id: message_id,
         sender: user_id,
@@ -51,7 +51,7 @@ defmodule CetaceaWeb.SendMessagesV1 do
       Enum.each(message["message_parts"], fn(message_part) ->
         Cetacea.Repo.insert(%MessagePartV1{
           message_id: message_id,
-          type_: message_part["type_"],
+          type: message_part["type"],
           data: message_part["data"],
         })
       end)

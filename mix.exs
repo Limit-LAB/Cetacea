@@ -52,7 +52,8 @@ defmodule Cetacea.MixProject do
       {:joken, "~> 2.5"},
       {:jason, "~> 1.3"},
       {:plug_cowboy, "~> 2.5"},
-      {:uuid, "~> 1.1"}
+      # {:uuid, "~> 1.1"}
+      {:uniq, "~> 0.1"}
     ]
   end
 
