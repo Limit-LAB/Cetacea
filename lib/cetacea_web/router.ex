@@ -16,7 +16,7 @@ defmodule CetaceaWeb.Router do
 
   pipeline :loginedapi do
     plug :accepts, ["json"]
-    plug CetaceaWeb.Plugs.Logined
+    plug CetaceaWeb.Plugs.Logged
   end
 
   scope "/api", CetaceaWeb do

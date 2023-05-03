@@ -1,4 +1,4 @@
-defmodule CetaceaWeb.Plugs.Logined do
+defmodule CetaceaWeb.Plugs.Logged do
   import Plug.Conn
   use CetaceaWeb, :controller
 
