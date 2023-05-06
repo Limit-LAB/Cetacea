@@ -30,6 +30,14 @@ defmodule MessageV1 do
     field :room_id, :string
     field :reply_to, :string
   end
+
+  def encode(struct) do
+    struct
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:room_id)
+    # |> Map.delete(:message_id)
+  end
 end
 
 defmodule MessagePartV1 do
@@ -39,5 +47,12 @@ defmodule MessagePartV1 do
     field :message_id, Ecto.UUID
     field :type, :string
     field :data, :string
+  end
+
+  def encode(struct) do
+    struct
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:message_id)
   end
 end
